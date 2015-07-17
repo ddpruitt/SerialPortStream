@@ -1,5 +1,5 @@
-﻿// $URL$
-// $Id$
+﻿// $URL: https://serialportstream.svn.codeplex.com/svn/code/SerialPortStream.cs $
+// $Id: SerialPortStream.cs 32775 2015-05-25 09:16:11Z unknown $
 
 // Copyright © Jason Curl 2012-2014
 // See http://serialportstream.codeplex.com for license details (MS-PL License)
@@ -432,8 +432,13 @@ namespace RJCP.IO.Ports
 
                 // Set the state of the DTR line if handshaking is disabled
                 if (!m_SerialPort.SerialPortCommState.OutDsrFlow) {
-                    // OutDsrFlow is only enabled if DtrControl is handshaking
+                    //   OutDsrFlow is only enabled if DtrControl is handshaking
+                    try
+                    {
                     m_SerialPort.SerialPortModemStatus.SetDtr(DtrEnable);
+                                    } catch (System.IO.IOException) {
+                    // Ignore IOException. Not all serial port drivers support setting Dtr (Crouzet), so we ignore it when opening.
+                }
                 }
             }
 
