@@ -2340,7 +2340,12 @@ namespace RJCP.IO.Ports
                 if (eventRunning) m_EventProcessing.WaitOne();
 
                 m_Trace.Close();
-                if (m_SerialPort != null) Close();
+                if (m_SerialPort != null)
+                {
+                    Close();
+                    m_SerialPort.Dispose();
+                }
+                    
                 m_EventProcessing.Dispose();
             }
             IsDisposed = true;
